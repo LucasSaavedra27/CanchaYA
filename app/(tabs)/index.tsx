@@ -1,10 +1,10 @@
-import { StyleSheet, ScrollView, View, TouchableOpacity, TextInput, ImageSourcePropType } from 'react-native';
-import { Image } from 'expo-image';
-import { Ionicons } from '@expo/vector-icons';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
-import { useColorScheme } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { ScrollView, StyleSheet, TextInput, TouchableOpacity, useColorScheme, View } from 'react-native';
+
+import { router } from 'expo-router';
 
 interface SportItemProps {
   sport: string;
@@ -21,13 +21,13 @@ interface FilterChipProps {
 export default function HomeScreen() {
   const colorScheme = useColorScheme();
   const theme = colorScheme ?? 'light';
-
   const SportItem = ({ sport, name, time, price }: SportItemProps) => (
     <TouchableOpacity 
       style={[
         styles.sportCard,
         { backgroundColor: Colors[theme].background }
       ]}
+      onPress={() => router.push('/field-details')}
     >
       <View style={styles.sportInfo}>
         <View style={styles.sportTypeContainer}>
