@@ -178,7 +178,10 @@ export default function FieldDetailsScreen() {
       </ScrollView>
 
       <View style={styles.bottomButton}>
-        <TouchableOpacity style={styles.bookButton}>
+        <TouchableOpacity 
+          style={styles.bookButton}
+          onPress={() => router.push('/booking-form')}
+        >
           <ThemedText style={styles.bookButtonText}>Reservar</ThemedText>
         </TouchableOpacity>
       </View>

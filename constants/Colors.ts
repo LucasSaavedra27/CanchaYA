@@ -20,6 +20,7 @@ export const Colors = {
     googleButton: '#FFFFFF',
     emailButton: '#007AFF',
     phoneButton: '#FFFFFF',
+    border: '#E0E0E0',
   },
   dark: {
     text: '#FFFFFF',
@@ -34,5 +35,6 @@ export const Colors = {
     googleButton: '#242424',
     emailButton: '#0A84FF',
     phoneButton: '#242424',
+    border: '#333333',
   },
 };
