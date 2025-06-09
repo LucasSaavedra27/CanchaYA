@@ -1,9 +1,9 @@
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { Colors } from '@/constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
 import { Stack, router } from 'expo-router';
 import { Image, StyleSheet, TouchableOpacity, View, useColorScheme } from 'react-native';
+import { ThemedText } from '../../components/ThemedText';
+import { ThemedView } from '../../components/ThemedView';
+import { Colors } from '../../constants/Colors';
 
 export default function LoginScreen() {
   const colorScheme = useColorScheme();
@@ -15,7 +15,7 @@ export default function LoginScreen() {
       <ThemedView style={styles.container}>
         <View style={styles.headerContainer}>
           <Image
-            source={require('../assets/images/LOGO-prueba.png')}
+            source={require('../../assets/images/LOGO-prueba.png')}
             style={styles.logo}
             resizeMode="contain"
           />
@@ -87,7 +87,7 @@ export default function LoginScreen() {
             ]}
             onPress={() => router.replace('/(admin)/dashboard')}
           >
-            <ThemedText style={[styles.buttonText, styles.whiteText]}>Continuar ADMIN</ThemedText>
+            <ThemedText style={[styles.buttonText, styles.whiteText]}>Continuar con Email</ThemedText>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -98,8 +98,9 @@ export default function LoginScreen() {
                 borderColor: Colors[theme].tint
               }
             ]}
-            onPress={() => router.replace('/(player)/(tabs)')}>
-            <ThemedText style={[styles.buttonText, styles.whiteText]}>Continuar PLAYER</ThemedText>
+            onPress={() => router.replace('/(player)/(tabs)')}
+          >
+            <ThemedText style={[styles.buttonText, styles.whiteText]}>Continuar Prueba</ThemedText>
           </TouchableOpacity>
 
           <View style={styles.loginContainer}>
