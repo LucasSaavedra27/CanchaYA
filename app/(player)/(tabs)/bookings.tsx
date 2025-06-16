@@ -1,7 +1,7 @@
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
-import { ScrollView, StyleSheet, View, useColorScheme } from 'react-native';
+import { Image, ScrollView, StyleSheet, View, useColorScheme } from 'react-native';
 
 
 interface BookingCardProps {
@@ -12,9 +12,32 @@ interface BookingCardProps {
   isPast: boolean;
 }
 
+const getSportEmoji = (sport: string) => {
+  switch (sport.toLowerCase()) {
+    case 'fútbol':
+      return '⚽';
+    case 'pádel':
+      return '🎾';
+    case 'voley':
+      return '🏐';
+    default:
+      return '🏅';
+  }
+};
+
 const BookingCard = ({ sport, fieldName, time, date, isPast }: BookingCardProps) => {
   const colorScheme = useColorScheme();
   const theme = colorScheme ?? 'light';
+  let imageSource;
+  if (fieldName === 'MiCancha') {
+    imageSource = require('@/assets/images/micancha.png');
+  } else if (fieldName === 'Leones') {
+    imageSource = require('@/assets/images/leones.jpg');
+  } else if (fieldName === 'Beach Voley') {
+    imageSource = require('@/assets/images/leones.jpg');
+  } else if (fieldName === 'Luck Padel') {
+    imageSource = require('@/assets/images/luck.jpg');
+  }
   return (
     <View style={[
       styles.card,
@@ -22,9 +45,12 @@ const BookingCard = ({ sport, fieldName, time, date, isPast }: BookingCardProps)
     ]}>
       <View style={styles.cardContent}>
         <View style={styles.cardInfo}>
-          <ThemedText style={styles.sportText}>{sport}</ThemedText>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <ThemedText style={styles.sportText}>{getSportEmoji(sport)} </ThemedText>
+            <ThemedText style={styles.sportText}>{sport}</ThemedText>
+          </View>
           <ThemedText style={styles.fieldName}>{fieldName}</ThemedText>
-          <ThemedText style={styles.timeText}>{time}</ThemedText>
+          <ThemedText style={styles.timeText}>{isPast ? `${date} ${time}hs` : time}</ThemedText>
           <View style={[
             styles.statusContainer,
             { backgroundColor: isPast ? '#FFE5E5' : '#E5FFE5' }
@@ -38,7 +64,11 @@ const BookingCard = ({ sport, fieldName, time, date, isPast }: BookingCardProps)
             </ThemedText>
           </View>
         </View>
-        <View style={styles.imagePlaceholder} />
+        {imageSource ? (
+          <Image source={imageSource} style={styles.cardImage} />
+        ) : (
+          <View style={styles.imagePlaceholder} />
+        )}
       </View>
     </View>
   );
@@ -48,33 +78,41 @@ const SAMPLE_BOOKINGS = [
   {
     id: '1',
     sport: 'Fútbol',
-    fieldName: 'Cancha Los Amigos',
+    fieldName: 'MiCancha',
     time: '20:00',
-    date: '10/06',
+    date: 'Lunes 10/06',
     isPast: false,
   },
   {
     id: '2',
-    sport: 'Pádel',
-    fieldName: 'Club Central',
+    sport: 'Fútbol',
+    fieldName: 'Leones',
     time: '18:30',
-    date: '12/06',
+    date: 'Miércoles 12/06',
     isPast: false,
   },
   {
+    id: '5',
+    sport: 'Pádel',
+    fieldName: 'Luck Padel',
+    time: '17:00',
+    date: 'Martes 28/05',
+    isPast: true,
+  },
+  {
     id: '3',
-    sport: 'Fútbol',
-    fieldName: 'Complejo Deportivo',
+    sport: 'Voley',
+    fieldName: 'Beach Voley',
     time: '19:00',
-    date: '01/06',
+    date: 'Sábado 01/06',
     isPast: true,
   },
   {
     id: '4',
-    sport: 'Tenis',
-    fieldName: 'Club Atlético',
+    sport: 'Fútbol',
+    fieldName: 'MiCancha',
     time: '16:00',
-    date: '30/05',
+    date: 'Viernes 30/05',
     isPast: true,
   },
 ];
@@ -82,7 +120,19 @@ const SAMPLE_BOOKINGS = [
 export default function BookingsScreen() {
   // Separar reservas futuras y pasadas
   const upcomingBookings = SAMPLE_BOOKINGS.filter(booking => !booking.isPast);
-  const pastBookings = SAMPLE_BOOKINGS.filter(booking => booking.isPast);
+  // Ordenar reservas finalizadas de más reciente a más antigua
+  const pastBookings = SAMPLE_BOOKINGS.filter(booking => booking.isPast).sort((a, b) => {
+    // Extraer fecha en formato dd/mm
+    const parseDate = (dateStr: string) => {
+      const match = dateStr.match(/(\d{2})\/(\d{2})/);
+      if (!match) return 0;
+      const day = parseInt(match[1]);
+      const month = parseInt(match[2]);
+      // Año fijo para mantener orden correcto
+      return new Date(2025, month - 1, day).getTime();
+    };
+    return parseDate(b.date) - parseDate(a.date);
+  });
 
   return (
     <ThemedView style={styles.container}>
@@ -204,5 +254,12 @@ const styles = StyleSheet.create({
     height: 80,
     backgroundColor: '#E1E1E1',
     borderRadius: 12,
+  },
+  cardImage: {
+    width: 80, // Aumentado
+    height: 80, // Aumentado
+    borderRadius: 16,
+    marginLeft: 12,
+    resizeMode: 'cover',
   },
 });

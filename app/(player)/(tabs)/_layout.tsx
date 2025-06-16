@@ -1,8 +1,8 @@
+import { Colors } from '@/constants/Colors';
+import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import React from 'react';
 import { View, useColorScheme } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { Colors } from '@/constants/Colors';
 
 const TabBarIcon = ({ 
   name, 
@@ -27,15 +27,15 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
+        headerShown: false,
         tabBarActiveTintColor: Colors[theme].tint,
         tabBarInactiveTintColor: Colors[theme].subtitle,
-        headerShown: false,
         tabBarStyle: {
           borderTopWidth: 0,
           elevation: 0,
           height: 60,
-          paddingBottom: 8,
-          paddingTop: 8,
+          paddingBottom: 10,
+          paddingTop: 2,
           backgroundColor: Colors[theme].background,
         },
       }}>
