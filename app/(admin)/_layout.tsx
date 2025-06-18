@@ -52,7 +52,7 @@ export default function AdminTabLayout() {
       <Tabs.Screen
         name="dashboard"
         options={{
-          title: 'Dashboard',
+          title: 'Estadísticas',
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="grid-outline" color={color} />
           ),

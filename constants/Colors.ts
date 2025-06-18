@@ -23,6 +23,7 @@ export const Colors: ColorTypes = {
     emailButton: '#007AFF',
     phoneButton: '#FFFFFF',
     border: '#E0E0E0',
+    card: '#FAFAFA',
   },
   dark: {
     text: '#FFFFFF',
@@ -38,5 +39,6 @@ export const Colors: ColorTypes = {
     emailButton: '#0A84FF',
     phoneButton: '#242424',
     border: '#333333',
+    card: '#444444',
   },
 };
