@@ -24,6 +24,7 @@ export default function BookingFormScreen() {
   const [selectedTimeAMPM, setSelectedTimeAMPM] = useState('AM');
   const [selectedDuration, setSelectedDuration] = useState(1);
   const [paymentOption, setPaymentOption] = useState('full');
+  const [selectedCancha, setSelectedCancha] = useState(1);
 
   // Referencia para el ScrollView de las horas
   const hourScrollViewRef = useRef<ScrollView>(null);
@@ -153,6 +154,7 @@ export default function BookingFormScreen() {
       </TouchableOpacity>
     );
   };
+
 
   // --- DEFINICIÓN DE STYLES dentro del componente con useMemo para adaptabilidad a tema ---
   const styles = useMemo(() => StyleSheet.create({
@@ -501,6 +503,32 @@ export default function BookingFormScreen() {
                     ]}
                   >
                     {duration} {duration === 1 ? 'Hora' : 'Horas'}
+                  </ThemedText>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+
+          {/* Sección de selección de cancha */}
+          <View style={styles.section}>
+            <ThemedText style={styles.sectionTitle}>Seleccionar Cancha</ThemedText>
+            <View style={{ flexDirection: 'row', gap: 8 }}>
+              {[1, 2, 3].map((cancha) => (
+                <TouchableOpacity
+                  key={cancha}
+                  style={[
+                    styles.durationOption,
+                    selectedCancha === cancha && { backgroundColor: Colors[theme].tint }
+                  ]}
+                  onPress={() => setSelectedCancha(cancha)}
+                >
+                  <ThemedText
+                    style={[
+                      styles.durationOptionText,
+                      selectedCancha === cancha && { color: '#fff' }
+                    ]}
+                  >
+                    Cancha {cancha}
                   </ThemedText>
                 </TouchableOpacity>
               ))}

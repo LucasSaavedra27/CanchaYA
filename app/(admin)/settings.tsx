@@ -1,7 +1,8 @@
 import { ThemedText } from '@/components/ThemedText';
+import { Colors } from '@/constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
-import { ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, TextInput, TouchableOpacity, View, useColorScheme } from 'react-native';
 
 const PAYMENT_METHODS = [
   { key: 'cash', label: 'Cash' },
@@ -10,151 +11,155 @@ const PAYMENT_METHODS = [
 ];
 
 export default function SettingsScreen() {
-  const [name, setName] = useState('');
-  const [address, setAddress] = useState('');
-  const [contact, setContact] = useState('');
-  const [opening, setOpening] = useState('');
-  const [closing, setClosing] = useState('');
+  const [name, setName] = useState('LEONES');
+  const [address, setAddress] = useState('Av. Siempre Viva 123');
+  const [contact, setContact] = useState('1234-5678');
+  const [opening, setOpening] = useState('08:00');
+  const [closing, setClosing] = useState('22:00');
   const [methods, setMethods] = useState({ cash: true, credit: true, debit: true });
+  const theme = useColorScheme() as 'light' | 'dark';
 
   const toggleMethod = (key: string) => {
     setMethods((prev) => ({ ...prev, [key]: !prev[key as keyof typeof prev] }));
   };
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 40 }}>
-      <View style={styles.headerRow}>
-        <TouchableOpacity style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color="#111" />
-        </TouchableOpacity>
-        <ThemedText style={styles.headerTitle}>Configuraciones</ThemedText>
-      </View>
-      <View style={styles.imageBox}>
-        <Ionicons name="image" size={120} color="#bbb" />
-        <TouchableOpacity style={styles.changeImageButton}>
-          <ThemedText style={styles.changeImageText}>Cambiar imagen</ThemedText>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.section}>
-        <ThemedText style={styles.sectionTitle}>Información del complejo</ThemedText>
-        <ThemedText style={styles.label}>Nombre del complejo</ThemedText>
-        <TextInput style={styles.input} value={name} onChangeText={setName} placeholder="" />
-        <ThemedText style={styles.label}>Dirección</ThemedText>
-        <TextInput style={styles.input} value={address} onChangeText={setAddress} placeholder="" />
-        <ThemedText style={styles.label}>Contacto</ThemedText>
-        <TextInput style={styles.input} value={contact} onChangeText={setContact} placeholder="" />
-      </View>
-      <View style={styles.section}>
-        <ThemedText style={styles.sectionTitle}>Horarios de atención</ThemedText>
-        <View style={styles.row}>
-          <View style={{ flex: 1, marginRight: 8 }}>
-            <ThemedText style={styles.label}>Apertura</ThemedText>
-            <TextInput style={styles.input} value={opening} onChangeText={setOpening} placeholder="" />
-          </View>
-          <View style={{ flex: 1, marginLeft: 8 }}>
-            <ThemedText style={styles.label}>Cierre</ThemedText>
-            <TextInput style={styles.input} value={closing} onChangeText={setClosing} placeholder="" />
+    <View style={styles.container}>
+     <View style={styles.header}>
+        <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 40 }}>
+        <ThemedText style={[styles.title, { color: Colors[theme].text }]}>Configuraciones</ThemedText>
+        <View style={[styles.imageBox, { backgroundColor: Colors[theme].card }]}>
+          <Image
+            source={require('../../assets/images/leones.jpg')}
+            style={{ width: 100, height: 100, borderRadius: 20 }}
+            resizeMode="cover"
+          />
+          <TouchableOpacity style={[styles.changeImageButton, { backgroundColor: Colors[theme].background }]}>
+            <ThemedText style={[styles.changeImageText, { color: Colors[theme].text }]}>Cambiar imagen</ThemedText>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.inputGroup}>
+          <ThemedText style={[styles.label, { color: Colors[theme].text }]}>Nombre del complejo</ThemedText>
+          <TextInput style={[styles.input, { color: Colors[theme].text, backgroundColor: Colors[theme].card, borderColor: Colors[theme].border }]} value={name} onChangeText={setName} placeholder="" placeholderTextColor={Colors[theme].tabIconDefault} />
+        </View>
+        <View style={styles.inputGroup}>
+          <ThemedText style={[styles.label, { color: Colors[theme].text }]}>Dirección</ThemedText>
+          <TextInput style={[styles.input, { color: Colors[theme].text, backgroundColor: Colors[theme].card, borderColor: Colors[theme].border }]} value={address} onChangeText={setAddress} placeholder="" placeholderTextColor={Colors[theme].tabIconDefault} />
+        </View>
+        <View style={styles.inputGroup}>
+          <ThemedText style={[styles.label, { color: Colors[theme].text }]}>Contacto</ThemedText>
+          <TextInput style={[styles.input, { color: Colors[theme].text, backgroundColor: Colors[theme].card, borderColor: Colors[theme].border }]} value={contact} onChangeText={setContact} placeholder="" placeholderTextColor={Colors[theme].tabIconDefault} />
+        </View>
+        <View style={styles.inputGroup}>
+          <ThemedText style={[styles.label, { color: Colors[theme].text }]}>Horarios de atención</ThemedText>
+          <View style={{ flexDirection: 'row', gap: 12 }}>
+            <View style={{ flex: 1 }}>
+              <TextInput style={[styles.input, { color: Colors[theme].text, backgroundColor: Colors[theme].card, borderColor: Colors[theme].border }]} value={opening} onChangeText={setOpening} placeholder="Apertura" placeholderTextColor={Colors[theme].tabIconDefault} />
+            </View>
+            <View style={{ flex: 1 }}>
+              <TextInput style={[styles.input, { color: Colors[theme].text, backgroundColor: Colors[theme].card, borderColor: Colors[theme].border }]} value={closing} onChangeText={setClosing} placeholder="Cierre" placeholderTextColor={Colors[theme].tabIconDefault} />
+            </View>
           </View>
         </View>
-      </View>
-      <View style={styles.section}>
-        <ThemedText style={styles.sectionTitle}>Métodos de pago</ThemedText>
-        {PAYMENT_METHODS.map((m) => (
-          <TouchableOpacity
-            key={m.key}
-            style={styles.checkboxRow}
-            onPress={() => toggleMethod(m.key)}
-            activeOpacity={0.7}
-          >
-            <View style={[styles.checkbox, methods[m.key as keyof typeof methods] && styles.checkboxChecked]}>
-              {methods[m.key as keyof typeof methods] && <Ionicons name="checkmark" size={18} color="#000" />}
-            </View>
-            <ThemedText style={styles.checkboxLabel}>{m.label === 'Cash' ? 'Efectivo' : m.label === 'Credit Card' ? 'Tarjeta de crédito' : 'Tarjeta de débito'}</ThemedText>
-          </TouchableOpacity>
-        ))}
-      </View>
-      <TouchableOpacity style={styles.supportButton}>
-        <ThemedText style={styles.supportButtonText}>Ayuda y soporte</ThemedText>
-      </TouchableOpacity>
-    </ScrollView>
+        <View style={styles.inputGroup}>
+          <ThemedText style={[styles.label, { color: Colors[theme].text }]}>Métodos de pago</ThemedText>
+          {PAYMENT_METHODS.map((m) => (
+            <TouchableOpacity
+              key={m.key}
+              style={styles.checkboxRow}
+              onPress={() => toggleMethod(m.key)}
+              activeOpacity={0.7}
+            >
+              <View style={[
+                styles.checkbox,
+                {
+                  borderColor: methods[m.key as keyof typeof methods] ? Colors[theme].tint : Colors[theme].border,
+                  backgroundColor: Colors[theme].background
+                }
+              ]}>
+                {methods[m.key as keyof typeof methods] && <Ionicons name="checkmark" size={18} color={Colors[theme].tint} />}
+              </View>
+              <ThemedText style={[styles.checkboxLabel, { color: Colors[theme].text }]}>
+                {m.label === 'Cash' ? 'Efectivo' : m.label === 'Credit Card' ? 'Tarjeta de crédito' : 'Tarjeta de débito'}
+              </ThemedText>
+            </TouchableOpacity>
+          ))}
+        </View>
+        <TouchableOpacity style={[styles.saveButton, { backgroundColor: Colors[theme].tint }]}
+        onPress={() => {
+          // Aquí puedes poner la lógica para eliminar la cancha
+          alert('Valores editados por tener permiso. (simulado)');
+        }}>
+          <ThemedText style={styles.saveButtonText}>Guardar cambios</ThemedText>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.deleteButton, { backgroundColor: '#e53935' }]}
+        onPress={() => {
+          // Aquí puedes poner la lógica para eliminar la cancha
+          alert('Complejo eliminado por tener permiso. (simulado)');
+        }}>
+          <ThemedText style={styles.saveButtonText}>Eliminar complejo</ThemedText>
+        </TouchableOpacity>
+      </ScrollView>
+    </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
-  headerRow: {
+  header: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingTop: 56,
-    paddingBottom: 16,
-    paddingHorizontal: 20,
-    backgroundColor: '#fff',
+    paddingBottom: 20,
+    paddingHorizontal: 16,
   },
   backButton: {
-    marginRight: 8,
+    marginTop: 20,
+    marginBottom: 12,
+    alignSelf: 'flex-start',
     padding: 4,
     borderRadius: 20,
   },
-  headerTitle: {
-    fontSize: 24,
+  title: {
+    fontSize: 28,
     fontWeight: 'bold',
     flex: 1,
-    textAlign: 'center',
     marginRight: 32,
+    marginBottom: 15,
+    paddingBottom: 16,
   },
   imageBox: {
-    width: '100%',
-    height: 180,
-    backgroundColor: '#f2f2f2',
     alignItems: 'center',
-    justifyContent: 'center',
     marginBottom: 24,
-    borderBottomLeftRadius: 24,
-    borderBottomRightRadius: 24,
-    overflow: 'hidden',
+    borderRadius: 20,
+    padding: 16,
   },
   changeImageButton: {
     marginTop: 8,
-    paddingVertical: 8,
+    borderRadius: 16,
     paddingHorizontal: 16,
-    borderRadius: 20,
-    backgroundColor: '#e0e0e0',
+    paddingVertical: 6,
   },
   changeImageText: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#111',
+    fontWeight: '600',
   },
-  section: {
-    marginBottom: 28,
-    paddingHorizontal: 20,
-  },
-  sectionTitle: {
-    fontSize: 19,
-    fontWeight: 'bold',
-    marginBottom: 16,
+  inputGroup: {
+    marginBottom: 18,
   },
   label: {
     fontSize: 15,
-    color: '#222',
     marginBottom: 6,
     fontWeight: '500',
   },
   input: {
     borderWidth: 1,
-    borderColor: '#e0e0e0',
     borderRadius: 10,
     padding: 12,
     fontSize: 16,
-    backgroundColor: '#fafafa',
-    marginBottom: 16,
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    marginBottom: 0,
   },
   checkboxRow: {
     flexDirection: 'row',
@@ -166,32 +171,29 @@ const styles = StyleSheet.create({
     height: 26,
     borderRadius: 6,
     borderWidth: 2,
-    borderColor: '#111',
-    backgroundColor: '#fff',
     marginRight: 12,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  checkboxChecked: {
-    backgroundColor: '#fff',
-    borderColor: '#111',
-  },
   checkboxLabel: {
     fontSize: 16,
-    color: '#111',
     fontWeight: '500',
   },
-  supportButton: {
-    marginTop: 12,
-    marginHorizontal: 20,
-    backgroundColor: '#f2f2f2',
-    borderRadius: 20,
+  saveButton: {
+    marginTop: 32,
+    borderRadius: 24,
     alignItems: 'center',
     paddingVertical: 16,
   },
-  supportButtonText: {
-    color: '#222',
+  saveButtonText: {
+    color: '#fff',
     fontWeight: 'bold',
     fontSize: 17,
+  },
+  deleteButton: {
+    marginTop: 16,
+    borderRadius: 24,
+    alignItems: 'center',
+    paddingVertical: 16,
   },
 });

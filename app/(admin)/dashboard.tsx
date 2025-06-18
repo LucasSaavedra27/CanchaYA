@@ -17,7 +17,7 @@ const StatCard = ({ title, value, subtitle, image }: StatCardProps) => {
   const theme = colorScheme ?? 'light';
 
   return (
-    <View style={[styles.statCard, { backgroundColor: Colors[theme].background }]}>
+    <View style={[styles.statCard, { backgroundColor: Colors[theme].card }]}>
       <View style={styles.statInfo}>
         <ThemedText style={styles.statTitle}>{title}</ThemedText>
         <ThemedText style={styles.statValue}>{value}</ThemedText>
@@ -58,7 +58,7 @@ export default function DashboardScreen() {
   return (
     <ThemedView style={styles.container}>
       <View style={styles.header}>
-        <ThemedText style={styles.title}>Dashboard</ThemedText>
+        <ThemedText style={styles.title}>Estadísticas</ThemedText>
         <TouchableOpacity>
           <Ionicons name="notifications-outline" size={24} color={Colors[theme].text} />
         </TouchableOpacity>
@@ -89,7 +89,7 @@ export default function DashboardScreen() {
             />
           </View>
 
-          <View style={styles.weeklyActivity}>
+          <View style={[styles.weeklyActivity, { backgroundColor: Colors[theme].card }]}>
             <View style={styles.weeklyHeader}>
               <ThemedText style={styles.sectionTitle}>Actividad semanal</ThemedText>
               <View style={styles.weeklyStats}>
@@ -152,21 +152,18 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     flexDirection: 'row',
     alignItems: 'center',
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+    shadowColor: '#FAFAFA',
+    shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
-    shadowRadius: 3.84,
-    elevation: 5,
+    shadowRadius: 3,
+    elevation: 3,
   },
   statInfo: {
     flex: 1,
   },
   statTitle: {
     fontSize: 14,
-    color: '#666',
+    color: '#999999',
     marginBottom: 4,
   },
   statValue: {
@@ -176,7 +173,7 @@ const styles = StyleSheet.create({
   },
   statSubtitle: {
     fontSize: 12,
-    color: '#666',
+    color: '#999999',
   },
   statImageContainer: {
     marginLeft: 16,
@@ -184,13 +181,12 @@ const styles = StyleSheet.create({
   imagePlaceholder: {
     width: 48,
     height: 48,
-    backgroundColor: '#E1E1E1',
+    backgroundColor: '#999999',
     borderRadius: 24,
     justifyContent: 'center',
     alignItems: 'center',
   },
   weeklyActivity: {
-    backgroundColor: Colors.light.background,
     borderRadius: 16,
     padding: 16,
     shadowColor: "#000",
@@ -215,7 +211,7 @@ const styles = StyleSheet.create({
   },
   bookingsLabel: {
     fontSize: 14,
-    color: '#666',
+    color: '#999999',
   },
   positiveChange: {
     color: '#44AA44',
@@ -240,6 +236,6 @@ const styles = StyleSheet.create({
   },
   barLabel: {
     fontSize: 12,
-    color: '#666',
+    color: '#999999',
   },
 });
