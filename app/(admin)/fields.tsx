@@ -73,7 +73,7 @@ export default function FieldsScreen() {
           styles.addButton,
           { backgroundColor: Colors[theme].tint }
         ]}
-        onPress={() => router.push('/(admin)/add-field')}
+        onPress={() => router.push('/(admin)/new-field')}
       >
         <Ionicons name="add" size={24} color="#fff" style={{ marginRight: 8 }} />
         <ThemedText style={styles.addButtonText}>Nueva cancha</ThemedText>

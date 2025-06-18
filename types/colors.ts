@@ -14,6 +14,7 @@ export interface ThemeColors {
   emailButton: string;
   phoneButton: string;
   border: string;
+  card: string;
 }
 
 export interface Colors {

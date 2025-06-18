@@ -49,7 +49,7 @@ export default function EditFieldScreen() {
     <ScrollView contentContainerStyle={styles.container}>
       <TouchableOpacity 
       style={[styles.backButton, { backgroundColor: theme === 'dark' ? Colors[theme].card : Colors[theme].background }]} 
-      onPress={() =>  router.replace('/(admin)/fields')}>
+      onPress={() => router.push('/(admin)/fields')}>
         <Ionicons name="arrow-back" size={24} color="#111" />
       </TouchableOpacity>
       <ThemedText style={styles.title}>Editar cancha</ThemedText>
