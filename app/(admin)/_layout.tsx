@@ -52,7 +52,7 @@ export default function AdminTabLayout() {
       <Tabs.Screen
         name="dashboard"
         options={{
-          title: 'Dashboard',
+          title: 'Estadísticas',
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="grid-outline" color={color} />
           ),
@@ -66,13 +66,21 @@ export default function AdminTabLayout() {
             <TabBarIcon name="card-outline" color={color} />
           ),
         }}
+      />      <Tabs.Screen
+        name="profile"
+        options={{
+          title: 'Perfil',
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="person-outline" color={color} />
+          ),
+        }}
       />
       <Tabs.Screen
         name="settings"
         options={{
-          title: 'Configuración',
+          title: 'Complejo',
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="settings-outline" color={color} />
+            <TabBarIcon name="business-outline" color={color} />
           ),
         }}
       />
@@ -80,6 +88,12 @@ export default function AdminTabLayout() {
         name="edit-field"
         options={{
           href: null // Oculta edit-field del tab bar
+        }}
+      />
+      <Tabs.Screen
+        name="new-field"
+        options={{
+          href: null // Oculta new-field del tab bar
         }}
       />
       

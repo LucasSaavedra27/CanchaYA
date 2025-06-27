@@ -6,34 +6,27 @@ import { Image as ExpoImage } from 'expo-image';
 import { useState } from 'react';
 import { Modal, ScrollView, StyleSheet, TextInput, TouchableOpacity, TouchableWithoutFeedback, useColorScheme, View } from 'react-native';
 
-export default function ProfileScreen() {
+export default function AdminProfileScreen() {
   const colorScheme = useColorScheme();
   const theme = colorScheme ?? 'light';
 
   const [editMode, setEditMode] = useState(false);
-  const [name, setName] = useState('Lucas');
-  const [surname, setSurname] = useState('Ramirez');
-  const [email, setEmail] = useState('lucas@email.com');
-  const [phone, setPhone] = useState('3812345678');
+  const [name, setName] = useState('Juan');
+  const [surname, setSurname] = useState('Pérez');
+  const [email, setEmail] = useState('juan@email.com');
+  const [phone, setPhone] = useState('3814567890');
   const [modalVisible, setModalVisible] = useState(false);
   const [settingsVisible, setSettingsVisible] = useState(false);
   const [darkMode, setDarkMode] = useState(theme === 'dark');
-  const FieldItem = ({ image, clubName, fieldName, isFavorite = false }: { image: any, clubName: string, fieldName: string, isFavorite?: boolean }) => (
-    <View style={styles.itemContainer}>
-      <ExpoImage 
-        source={image} 
-        style={styles.fieldImage}
-        contentFit="cover"
-        transition={200}
-      />
-      <View style={styles.itemTextContainer}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <ThemedText style={styles.itemTitle}>{clubName}</ThemedText>
-          {isFavorite && (
-            <Ionicons name="star" size={18} color="#FFD700" style={{ marginLeft: 6 }} />
-          )}
-        </View>
-        <ThemedText style={styles.itemSubtitle}>{fieldName}</ThemedText>
+
+  const InfoItem = ({ icon, title, value }: { icon: any, title: string, value: string }) => (
+    <View style={styles.infoItemContainer}>
+      <View style={styles.infoIconContainer}>
+        <Ionicons name={icon} size={24} color={Colors[theme].text} />
+      </View>
+      <View style={styles.infoTextContainer}>
+        <ThemedText style={styles.infoTitle}>{title}</ThemedText>
+        <ThemedText style={styles.infoValue}>{value}</ThemedText>
       </View>
     </View>
   );
@@ -43,7 +36,11 @@ export default function ProfileScreen() {
       <View style={styles.header}>
         <ThemedText style={styles.title}>Mi Perfil</ThemedText>
         <TouchableOpacity onPress={() => setSettingsVisible(true)}>
-          <Ionicons name="settings-outline" size={24} color={theme === 'dark' ? Colors.dark.text : Colors.light.text} />
+          <Ionicons 
+            name="settings-outline" 
+            size={24} 
+            color={theme === 'dark' ? Colors.dark.text : Colors.light.text} 
+          />
         </TouchableOpacity>
       </View>
 
@@ -60,7 +57,7 @@ export default function ProfileScreen() {
           />
         </TouchableOpacity>
         <ThemedText style={styles.name}>{name} {surname}</ThemedText>
-        <ThemedText style={styles.points}>1200 Points</ThemedText>
+        <ThemedText style={styles.subtitle}>Administrador</ThemedText>
 
         <TouchableOpacity 
           style={[styles.editButton, { backgroundColor: Colors[theme].buttonBorder + '40' }]} 
@@ -82,8 +79,7 @@ export default function ProfileScreen() {
           activeOpacity={1} 
           onPress={() => setModalVisible(false)}
         >
-          <View style={[styles.modalContent, { backgroundColor: Colors[theme].background }]}
-          >
+          <View style={[styles.modalContent, { backgroundColor: Colors[theme].background }]}>
             <ExpoImage 
               source={require('@/assets/images/avatar.png')} 
               style={styles.avatarLarge}
@@ -98,17 +94,18 @@ export default function ProfileScreen() {
               }}
             >
               <ThemedText style={[styles.changePhotoText, { color: '#fff' }]}>
-                Cambiar imagen de perfil
+                Cambiar foto de perfil
               </ThemedText>
             </TouchableOpacity>
           </View>
         </TouchableOpacity>
       </Modal>
 
+      {/* Modal de configuración */}
       <Modal visible={settingsVisible} transparent animationType="fade" onRequestClose={() => setSettingsVisible(false)}>
         <TouchableWithoutFeedback onPress={() => setSettingsVisible(false)}>
           <View style={styles.modalOverlay}>
-            <View style={styles.settingsModal}>
+            <View style={[styles.settingsModal, { backgroundColor: Colors[theme].background }]}>
               <ThemedText style={styles.sectionTitle}>Configuración</ThemedText>
               <View style={styles.settingRow}>
                 <ThemedText style={styles.settingLabel}>Modo oscuro</ThemedText>
@@ -121,94 +118,98 @@ export default function ProfileScreen() {
                   </ThemedText>
                 </TouchableOpacity>
               </View>
-              <View style={styles.settingRow}>
-                <ThemedText style={styles.settingLabel}>Notificaciones</ThemedText>
-                <TouchableOpacity style={styles.toggleButton}>
-                  <ThemedText style={styles.toggleText}>Configurar</ThemedText>
-                </TouchableOpacity>
-              </View>
-              <TouchableOpacity style={styles.closeNotifButton} onPress={() => setSettingsVisible(false)}>
-                <ThemedText style={styles.closeNotifText}>Cerrar</ThemedText>
+              <TouchableOpacity 
+                style={[styles.closeButton, { backgroundColor: Colors[theme].tint }]}
+                onPress={() => setSettingsVisible(false)}
+              >
+                <ThemedText style={[styles.closeButtonText, { color: '#fff' }]}>Cerrar</ThemedText>
               </TouchableOpacity>
             </View>
           </View>
         </TouchableWithoutFeedback>
       </Modal>
 
-      {editMode && (
-        <View style={styles.editSection}>
-          <ThemedText style={styles.sectionTitle}>Editar Perfil</ThemedText>
-          <TextInput
-            style={styles.input}
-            value={name}
-            onChangeText={setName}
-            placeholder="Nombre"
-            placeholderTextColor="#888"
-          />
-          <TextInput
-            style={styles.input}
-            value={surname}
-            onChangeText={setSurname}
-            placeholder="Apellido"
-            placeholderTextColor="#888"
-          />
-          <TextInput
-            style={styles.input}
-            value={email}
-            onChangeText={setEmail}
-            placeholder="Correo electrónico"
-            placeholderTextColor="#888"
-            keyboardType="email-address"
-            autoCapitalize="none"
-          />
-          <TextInput
-            style={styles.input}
-            value={phone}
-            onChangeText={setPhone}
-            placeholder="Teléfono"
-            placeholderTextColor="#888"
-            keyboardType="phone-pad"
-          />
-          <TouchableOpacity style={[styles.editButton, { backgroundColor: '#007AFF' }]} onPress={() => setEditMode(false)}>
-            <ThemedText style={[styles.editText, { color: '#fff' }]}>Guardar</ThemedText>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.editButton, { backgroundColor: '#FF3B30', marginTop: 0 }]} onPress={() => setEditMode(false)}>
-            <ThemedText style={[styles.editText, { color: '#fff' }]}>Cancelar</ThemedText>
-          </TouchableOpacity>
-        </View>
-      )}
-
       <ScrollView style={styles.sectionContainer} showsVerticalScrollIndicator={false}>
-        <ThemedText style={styles.sectionTitle}>Historial reservas</ThemedText>
-        <FieldItem 
-          image={require('@/assets/images/luck.jpg')} 
-          clubName="Luck Padel" 
-          fieldName="Pádel · Martes 28/05 17:00hs" 
-          isFavorite={true}
+        <View style={styles.statsContainer}>
+          <View style={styles.statItem}>
+            <ThemedText style={styles.statValue}>45</ThemedText>
+            <ThemedText style={styles.statLabel}>Turnos Gestionados</ThemedText>
+          </View>
+          <View style={styles.statItem}>
+            <ThemedText style={styles.statValue}>98%</ThemedText>
+            <ThemedText style={styles.statLabel}>Respuesta</ThemedText>
+          </View>
+          <View style={styles.statItem}>
+            <ThemedText style={styles.statValue}>4.9</ThemedText>
+            <ThemedText style={styles.statLabel}>Valoración</ThemedText>
+          </View>
+        </View>
+
+        <ThemedText style={styles.sectionTitle}>Información de Contacto</ThemedText>
+        <InfoItem 
+          icon="person-outline" 
+          title="Nombre" 
+          value={`${name} ${surname}`}
         />
-        <FieldItem 
-          image={require('@/assets/images/leones.jpg')} 
-          clubName="Beach Voley" 
-          fieldName="Voley · Sábado 01/06 19:00hs" 
+        <InfoItem 
+          icon="mail-outline" 
+          title="Email" 
+          value={email}
         />
-        <FieldItem 
-          image={require('@/assets/images/micancha.png')} 
-          clubName="MiCancha" 
-          fieldName="Fútbol · Viernes 30/05 16:00hs" 
-          isFavorite={true}
+        <InfoItem 
+          icon="call-outline" 
+          title="Teléfono" 
+          value={phone}
         />
 
-        <ThemedText style={styles.sectionTitle}>Favoritos</ThemedText>
-        <FieldItem 
-          image={require('@/assets/images/micancha.png')} 
-          clubName="MiCancha" 
-          fieldName="Av. Virgen del Valle 734" 
-        />
-        <FieldItem 
-          image={require('@/assets/images/luck.jpg')} 
-          clubName="Luck Padel" 
-          fieldName="Av. Enrique Ocampo 768" 
-        />
+        {editMode && (
+          <View style={[styles.editSection, { backgroundColor: Colors[theme].background }]}>
+            <ThemedText style={styles.sectionTitle}>Editar Información</ThemedText>
+            <TextInput
+              style={[styles.input, { backgroundColor: Colors[theme].buttonBorder + '40' }]}
+              value={name}
+              onChangeText={setName}
+              placeholder="Nombre"
+              placeholderTextColor="#888"
+            />
+            <TextInput
+              style={[styles.input, { backgroundColor: Colors[theme].buttonBorder + '40' }]}
+              value={surname}
+              onChangeText={setSurname}
+              placeholder="Apellido"
+              placeholderTextColor="#888"
+            />
+            <TextInput
+              style={[styles.input, { backgroundColor: Colors[theme].buttonBorder + '40' }]}
+              value={email}
+              onChangeText={setEmail}
+              placeholder="Correo electrónico"
+              placeholderTextColor="#888"
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
+            <TextInput
+              style={[styles.input, { backgroundColor: Colors[theme].buttonBorder + '40' }]}
+              value={phone}
+              onChangeText={setPhone}
+              placeholder="Teléfono"
+              placeholderTextColor="#888"
+              keyboardType="phone-pad"
+            />
+            <TouchableOpacity 
+              style={[styles.editButton, { backgroundColor: Colors[theme].tint }]} 
+              onPress={() => setEditMode(false)}
+            >
+              <ThemedText style={[styles.editText, { color: '#fff' }]}>Guardar</ThemedText>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={[styles.editButton, { backgroundColor: '#FF3B30' }]} 
+              onPress={() => setEditMode(false)}
+            >
+              <ThemedText style={[styles.editText, { color: '#fff' }]}>Cancelar</ThemedText>
+            </TouchableOpacity>
+          </View>
+        )}
       </ScrollView>
     </ThemedView>
   );
@@ -248,7 +249,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 4,
   },
-  points: {
+  subtitle: {
     fontSize: 14,
     opacity: 0.7,
     marginBottom: 12,
@@ -300,6 +301,26 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
   },
+  statsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 24,
+    paddingHorizontal: 8,
+  },
+  statItem: {
+    alignItems: 'center',
+    flex: 1,
+  },
+  statValue: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  statLabel: {
+    fontSize: 12,
+    opacity: 0.7,
+    textAlign: 'center',
+  },
   sectionContainer: {
     flex: 1,
   },
@@ -308,52 +329,34 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginVertical: 12,
   },
-  itemContainer: {
+  infoItemContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: 16,
     paddingHorizontal: 4,
   },
-  fieldImage: {
-    width: 64,
-    height: 64,
-    borderRadius: 8,
+  infoIconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
     marginRight: 12,
+    backgroundColor: 'rgba(0,0,0,0.05)',
   },
-  itemTextContainer: {
+  infoTextContainer: {
     flex: 1,
   },
-  itemTitle: {
+  infoTitle: {
+    fontSize: 12,
+    opacity: 0.7,
+    marginBottom: 2,
+  },
+  infoValue: {
     fontSize: 15,
-    fontWeight: '600',
-  },
-  itemSubtitle: {
-    fontSize: 13,
-    opacity: 0.6,
-  },
-  editSection: {
-    backgroundColor: '#fff',
-    borderColor: '#eee',
-    borderWidth: 1,
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 24,
-    marginHorizontal: 0,
-    elevation: 2,
-  },
-  input: {
-    backgroundColor: '#f5f5f5',
-    color: '#222',
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    fontSize: 16,
-    marginBottom: 12,
+    fontWeight: '500',
   },
   settingsModal: {
-    backgroundColor: '#fff',
     borderRadius: 16,
     padding: 24,
     marginHorizontal: 24,
@@ -388,17 +391,32 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
   },
-  closeNotifButton: {
-    backgroundColor: '#007AFF',
+  closeButton: {
     borderRadius: 8,
     paddingHorizontal: 24,
     paddingVertical: 10,
     marginTop: 10,
   },
-  closeNotifText: {
-    color: '#fff',
+  closeButtonText: {
     fontWeight: 'bold',
     fontSize: 16,
-    textAlign: 'center',
+  },
+  editSection: {
+    borderColor: '#eee',
+    borderWidth: 1,
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 24,
+    marginHorizontal: 0,
+    elevation: 2,
+  },
+  input: {
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: 'transparent',
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    fontSize: 16,
+    marginBottom: 12,
   },
 });
